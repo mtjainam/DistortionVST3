@@ -182,19 +182,19 @@ void Distortion1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
             {
                 channelData[sample] = mDrive * channelData[sample];
                 
-                    if (channelData[sample] < 0.005 * mThresh2 || channelData[sample] > 0.005 * -mThresh2)
+                    if (channelData[sample] < 0.02 * mThresh2 || channelData[sample] > 0.02 * -mThresh2)
                     {
                         channelData[sample] = channelData[sample];
                     }
                     
-                    if (channelData[sample] >= 0.005 *mThresh2 )
+                    if (channelData[sample] >= 0.02 *mThresh2 )
                     {
-                        channelData[sample] = 0.005 * mThresh2;
+                        channelData[sample] = 0.02 * mThresh2;
                     }
                     
-                    if (channelData[sample] <= 0.005 * -mThresh2)
+                    if (channelData[sample] <= 0.02 * -mThresh2)
                     {
-                        channelData[sample] = 0.005 * -mThresh2;
+                        channelData[sample] = 0.02 * -mThresh2;
                     }
                     
             }
@@ -213,7 +213,7 @@ void Distortion1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
                 
                 if (channelData[sample] >= 0.01 * mThresh2)
                 {
-                    channelData[sample] = (channelData[sample]-mThresh2) * 0.5 + mThresh2;
+                    channelData[sample] = (channelData[sample]-0.01 * mThresh2) * 0.5 + 0.01 * mThresh2;
                 }
                 
                 if (channelData[sample] < 0.01 * mThresh2 || channelData[sample] > 0.01 * mThresh2)
@@ -223,7 +223,7 @@ void Distortion1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
                 
                 if (channelData[sample] <= 0.01 * -mThresh2)
                 {
-                    channelData[sample] = (channelData[sample]+mThresh2) * 0.5 - mThresh2;
+                    channelData[sample] = (channelData[sample]+0.01 * mThresh2) * 0.5 - 0.01 * mThresh2;
                 }
                     
             }
