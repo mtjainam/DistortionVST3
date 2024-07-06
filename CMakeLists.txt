@@ -3,8 +3,13 @@ cmake_minimum_required(VERSION 3.15)
 # Project name and version
 project(DistortionVST3 VERSION 1.0.0)
 
+# Path to the JUCE library
+if(NOT DEFINED JUCE_PATH)
+    set(JUCE_PATH "/Users/jainamtm/JUCE")
+endif()
+
 # Add the JUCE framework
-add_subdirectory(JUCE)
+add_subdirectory(${JUCE_PATH} JUCE)
 
 # Add your source files
 add_executable(DistortionVST3
