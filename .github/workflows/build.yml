@@ -1,0 +1,38 @@
+name: Build VST Plugin
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Visual Studio
+      uses: ilammy/msvc-dev-cmd@v1
+
+    - name: Install JUCE Dependencies
+      run: |
+        choco install cmake
+        choco install msys2
+        refreshenv
+        ridk install
+
+    - name: Configure CMake
+      run: cmake -B build -G "Visual Studio 16 2019" -A x64
+
+    - name: Build
+      run: cmake --build build --config Release
+
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: vst3-plugin
+        path: build/Release/your_plugin.vst3
+
