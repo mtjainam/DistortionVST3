@@ -25,10 +25,14 @@ jobs:
     - name: Download JUCE
       run: git clone --branch 6.1.2 --depth 1 https://github.com/juce-framework/JUCE.git
 
-    - name: Configure CMake
+    - name: Initialize MSBuild environment
       run: |
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-        cmake -B build -S . -G "Visual Studio 16 2019" -A x64 -DJUCE_PATH=JUCE
+        vswhere -latest -products * -requires Microsoft.Component.MSBuild -find **/vcvars64.bat > vcvars64_path.txt
+        set /p VCVARSPATH=<vcvars64_path.txt
+        call "%VCVARSPATH%"
+
+    - name: Configure CMake
+      run: cmake -B build -S . -G "Visual Studio 16 2019" -A x64 -DJUCE_PATH=JUCE
 
     - name: Build
       run: cmake --build build --config Release
