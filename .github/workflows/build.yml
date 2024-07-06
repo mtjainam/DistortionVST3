@@ -15,15 +15,16 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Set up Visual Studio
-      run: |
-        choco install visualstudio2019community
-        choco install visualstudio2019-workload-vctools
+      uses: microsoft/setup-msbuild@v1.0.3
 
     - name: Install CMake
       run: choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
 
+    - name: Download JUCE
+      run: git clone --branch 6.1.2 --depth 1 https://github.com/juce-framework/JUCE.git
+
     - name: Configure CMake
-      run: cmake -B build -G "Visual Studio 16 2019" -A x64
+      run: cmake -B build -S . -G "Visual Studio 16 2019" -A x64 -DJUCE_PATH=JUCE
 
     - name: Build
       run: cmake --build build --config Release
@@ -33,3 +34,4 @@ jobs:
       with:
         name: vst3-plugin
         path: build/Release/your_plugin.vst3
+
