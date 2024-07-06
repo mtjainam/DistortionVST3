@@ -13,6 +13,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      with:
+        submodules: true  # Ensure submodules are checked out
 
     - name: Set up Visual Studio
       uses: microsoft/setup-msbuild@v1.0.3
@@ -24,7 +26,9 @@ jobs:
       run: git clone --branch 6.1.2 --depth 1 https://github.com/juce-framework/JUCE.git
 
     - name: Configure CMake
-      run: cmake -B build -S . -G "Visual Studio 16 2019" -A x64 -DJUCE_PATH=JUCE
+      run: |
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+        cmake -B build -S . -G "Visual Studio 16 2019" -A x64 -DJUCE_PATH=JUCE
 
     - name: Build
       run: cmake --build build --config Release
